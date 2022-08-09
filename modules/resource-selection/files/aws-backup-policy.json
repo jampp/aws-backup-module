@@ -1,0 +1,106 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "EventBridgeRulesReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "events:ListRules",
+                "events:ListTargetsByRule"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "EventBridgeRules",
+            "Effect": "Allow",
+            "Action": [
+                "events:PutTargets",
+                "events:DeleteRule",
+                "events:PutRule",
+                "events:RemoveTargets"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "CloudwatchReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:GetMetricData"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "ResourceGroupTagging",
+            "Effect": "Allow",
+            "Action": [
+                "tag:GetResources"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "KMSGrant",
+            "Effect": "Allow",
+            "Action": "kms:CreateGrant",
+            "Resource": "arn:aws:kms:*:905123353491:key/*",
+            "Condition": {
+                "Bool": {
+                    "kms:GrantIsForAWSResource": "true"
+                }
+            }
+        },
+        {
+            "Sid": "KMSKey",
+            "Effect": "Allow",
+            "Action": "kms:GenerateDataKeyWithoutPlaintext",
+            "Resource": "arn:aws:kms:*:*:key/*",
+            "Condition": {
+                "StringLike": {
+                    "kms:ViaService": "ec2.*.amazonaws.com"
+                }
+            }
+        },
+        {
+            "Sid": "KMSKeyReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "kms:DescribeKey"
+            ],
+            "Resource": [
+                "arn:aws:kms:*:905123353491:key/*"
+            ]
+        },
+        {
+            "Sid": "BackupVaultReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "backup:DescribeBackupVault"
+            ],
+            "Resource": "arn:aws:backup:*:905123353491:backup-vault:*"
+        },
+        {
+            "Sid": "BackupVaultCopy",
+            "Effect": "Allow",
+            "Action": [
+                "backup:CopyFromBackupVault",
+                "backup:CopyIntoBackupVault"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "BackupGatewayReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "backup-gateway:ListTagsForResource"
+            ],
+            "Resource": "arn:aws:backup-gateway:*:*:vm/*"
+        },
+        {
+            "Sid": "BackupGateway",
+            "Effect": "Allow",
+            "Action": [
+                "backup-gateway:Backup"
+            ],
+            "Resource": "arn:aws:backup-gateway:*:*:vm/*"
+        }
+    ]
+}

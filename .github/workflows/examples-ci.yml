@@ -1,0 +1,131 @@
+name: Terraform Examples CI
+
+on:
+  pull_request:
+    paths:
+      - "examples/**"
+
+jobs:
+  backup-plan:
+    name: backup-plan example CI
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Check format
+        uses: docker://hashicorp/terraform:1.2.4
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/backup-plan fmt -check
+
+      - name: Init Terraform
+        uses: docker://hashicorp/terraform:1.2.4
+        env:
+          GIT_SSH_COMMAND: "echo '${{ secrets.GH_ACTIONS_PRV_KEY }}' > id_rsa
+            && ssh-keyscan github.com > known_hosts
+            && chmod 600 id_rsa known_hosts
+            && ssh -i ./id_rsa -o UserKnownHostsFile=./known_hosts"
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/backup-plan init
+
+      - name: Validate code
+        uses: docker://hashicorp/terraform:1.2.4
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/backup-plan validate
+
+  backup-vault:
+    name: backup-vault example CI
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Check format
+        uses: docker://hashicorp/terraform:1.2.4
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/backup-vault fmt -check
+
+      - name: Init Terraform
+        uses: docker://hashicorp/terraform:1.2.4
+        env:
+          GIT_SSH_COMMAND: "echo '${{ secrets.GH_ACTIONS_PRV_KEY }}' > id_rsa
+            && ssh-keyscan github.com > known_hosts
+            && chmod 600 id_rsa known_hosts
+            && ssh -i ./id_rsa -o UserKnownHostsFile=./known_hosts"
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/backup-vault init
+
+      - name: Validate code
+        uses: docker://hashicorp/terraform:1.2.4
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/backup-vault validate
+
+  resource-selection:
+    name: resource-selection example CI
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Check format
+        uses: docker://hashicorp/terraform:1.2.4
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/resource-selection fmt -check
+
+      - name: Init Terraform
+        uses: docker://hashicorp/terraform:1.2.4
+        env:
+          GIT_SSH_COMMAND: "echo '${{ secrets.GH_ACTIONS_PRV_KEY }}' > id_rsa
+            && ssh-keyscan github.com > known_hosts
+            && chmod 600 id_rsa known_hosts
+            && ssh -i ./id_rsa -o UserKnownHostsFile=./known_hosts"
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/resource-selection init
+
+      - name: Validate code
+        uses: docker://hashicorp/terraform:1.2.4
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/resource-selection validate
+
+  complete:
+    name: complete example CI
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Check format
+        uses: docker://hashicorp/terraform:1.2.4
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/complete fmt -check
+
+      - name: Init Terraform
+        uses: docker://hashicorp/terraform:1.2.4
+        env:
+          GIT_SSH_COMMAND: "echo '${{ secrets.GH_ACTIONS_PRV_KEY }}' > id_rsa
+            && ssh-keyscan github.com > known_hosts
+            && chmod 600 id_rsa known_hosts
+            && ssh -i ./id_rsa -o UserKnownHostsFile=./known_hosts"
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/complete init
+
+      - name: Validate code
+        uses: docker://hashicorp/terraform:1.2.4
+        with:
+          entrypoint: terraform
+          args: -chdir=examples/complete validate
